@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Особое приглашение 💌</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Фоновые сердечки -->
+  <div class="hearts-container" id="heartsContainer"></div>
+
+  <!-- ======== ЭКРАН 1: Приглашение ======== -->
+  <section class="screen active" id="screen-invite">
+    <div class="card invite-card">
+      <div class="envelope-icon">💌</div>
+      <h1 class="invite-title">Привет!</h1>
+      <p class="invite-subtitle">У меня есть для тебя один очень важный вопрос...</p>
+      <p class="invite-question">Пойдёшь со мной<br/><span class="highlight">на свидание?</span></p>
+      <div class="buttons-wrap" id="buttonsWrap">
+        <button class="btn btn-yes" id="btnYes" onclick="handleYes()">Да 🥰</button>
+        <button class="btn btn-no" id="btnNo" onmouseenter="runAway(event)" ontouchstart="runAway(event)">Нет 🙅</button>
+      </div>
+      <p class="no-hint" id="noHint"></p>
+    </div>
+  </section>
+
+  <!-- ======== ЭКРАН 2: Форма ======== -->
+  <section class="screen" id="screen-form">
+    <div class="card form-card">
+      <div class="form-header">
+        <span class="form-emoji">🌹</span>
+        <h2 class="form-title">Отлично! Давай всё спланируем</h2>
+        <p class="form-sub">Расскажи мне немного о себе и своих предпочтениях</p>
+      </div>
+
+      <div class="form-body">
+        <!-- Имя -->
+        <div class="field-group">
+          <label class="field-label" for="inputName">Твоё имя</label>
+          <input class="field-input" type="text" id="inputName" placeholder="Напиши своё имя..." autocomplete="off" />
+        </div>
+
+        <!-- Любимая еда -->
+        <div class="field-group">
+          <label class="field-label">Любимая еда</label>
+          <div class="food-chips" id="foodChips">
+            <button type="button" class="chip" onclick="toggleChip(this)">🍕 Пицца</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">🍣 Суши</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">🍝 Паста</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">🥗 Салаты</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">🍔 Бургеры</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">🥩 Стейк</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">🍜 Рамен</button>
+            <button type="button" class="chip" onclick="toggleChip(this)">🥐 Выпечка</button>
+          </div>
+          <input class="field-input" type="text" id="inputFoodCustom" placeholder="Или напиши свой вариант..." autocomplete="off" />
+        </div>
+
+        <!-- Дата -->
+        <div class="field-group">
+          <label class="field-label" for="inputDate">Дата свидания</label>
+          <input class="field-input" type="date" id="inputDate" />
+        </div>
+
+        <!-- Время -->
+        <div class="field-group">
+          <label class="field-label" for="inputTime">Удобное время</label>
+          <div class="time-chips" id="timeChips">
+            <button type="button" class="chip" onclick="toggleTimeChip(this)">☀️ Утро (10:00–12:00)</button>
+            <button type="button" class="chip" onclick="toggleTimeChip(this)">🌤 День (13:00–16:00)</button>
+            <button type="button" class="chip" onclick="toggleTimeChip(this)">🌆 Вечер (18:00–20:00)</button>
+            <button type="button" class="chip" onclick="toggleTimeChip(this)">🌙 Ночь (21:00+)</button>
+          </div>
+          <input class="field-input" type="time" id="inputTime" />
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <button class="btn btn-submit" onclick="submitForm()">
+          Подтвердить свидание 💕
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== ЭКРАН 3: Успех ======== -->
+  <section class="screen" id="screen-success">
+    <div class="card success-card">
+      <div class="success-hearts">
+        <span>💖</span><span>💕</span><span>💗</span>
+      </div>
+      <h2 class="success-title">Спасибо!</h2>
+      <p class="success-msg">Информация отправлена.<br/>Жду нашей встречи с нетерпением!</p>
+      <div class="success-detail" id="successDetail"></div>
+      <div class="success-footer">✨ Это будет незабываемо ✨</div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

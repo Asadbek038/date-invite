@@ -1,0 +1,442 @@
+/* ============================================================
+   РОМАНТИЧЕСКИЙ САЙТ-ПРИГЛАШЕНИЕ
+   style.css
+   ============================================================ */
+
+/* ── Переменные ── */
+:root {
+  --rose:       #e8607a;
+  --rose-dark:  #c94468;
+  --rose-light: #fde8ed;
+  --blush:      #f9d6df;
+  --cream:      #fff8f9;
+  --text:       #2d1c22;
+  --text-soft:  #7a5462;
+  --white:      #ffffff;
+  --shadow:     0 20px 60px rgba(232, 96, 122, 0.18);
+  --radius:     20px;
+  --radius-sm:  10px;
+}
+
+/* ── Сброс и база ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: linear-gradient(135deg, #fce4ec 0%, #fdf0f3 40%, #f8e6ff 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--text);
+}
+
+/* ── Плавающие сердечки ── */
+.hearts-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.heart-particle {
+  position: absolute;
+  bottom: -60px;
+  font-size: 1.4rem;
+  opacity: 0;
+  animation: floatUp linear infinite;
+  user-select: none;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0) rotate(0deg) scale(1);   opacity: 0; }
+  10%  { opacity: 0.7; }
+  80%  { opacity: 0.5; }
+  100% { transform: translateY(-110vh) rotate(25deg) scale(0.6); opacity: 0; }
+}
+
+/* ── Экраны ── */
+.screen {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.screen.active { display: flex; }
+
+/* ── Карточки ── */
+.card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 28px;
+  box-shadow: var(--shadow), 0 4px 20px rgba(255, 200, 210, 0.3);
+  padding: 48px 40px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  animation: cardIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+/* ── Экран 1: Приглашение ── */
+.envelope-icon {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 16px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0);   }
+  50%       { transform: translateY(-10px); }
+}
+
+.invite-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  color: var(--rose-dark);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.invite-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  font-weight: 300;
+  margin-bottom: 24px;
+  letter-spacing: 0.03em;
+}
+
+.invite-question {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  color: var(--text);
+  line-height: 1.35;
+  margin-bottom: 36px;
+}
+
+.invite-question .highlight {
+  color: var(--rose);
+  font-style: italic;
+  position: relative;
+}
+
+.invite-question .highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--rose), transparent);
+  border-radius: 2px;
+}
+
+/* ── Кнопки на экране 1 ── */
+.buttons-wrap {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.btn {
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  padding: 14px 36px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-dark) 100%);
+  color: var(--white);
+  box-shadow: 0 8px 24px rgba(232, 96, 122, 0.4);
+  min-width: 130px;
+}
+
+.btn-yes:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 32px rgba(232, 96, 122, 0.5);
+}
+
+.btn-yes:active { transform: scale(0.97); }
+
+.btn-no {
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+  color: #888;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  min-width: 130px;
+  position: fixed; /* переопределяется в JS */
+  /* начальное состояние — в потоке */
+  position: relative;
+}
+
+.btn-no.running {
+  position: fixed;
+  transition: none !important;
+}
+
+.no-hint {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  min-height: 20px;
+  font-style: italic;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Экран 2: Форма ── */
+.form-card { text-align: left; padding: 40px 36px; }
+
+.form-header { text-align: center; margin-bottom: 32px; }
+
+.form-emoji { font-size: 2.5rem; display: block; margin-bottom: 10px; animation: rotate 4s ease-in-out infinite; }
+
+@keyframes rotate {
+  0%, 100% { transform: rotate(-5deg); }
+  50%       { transform: rotate(5deg);  }
+}
+
+.form-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.65rem;
+  color: var(--rose-dark);
+  margin-bottom: 6px;
+}
+
+.form-sub { font-size: 0.9rem; color: var(--text-soft); font-weight: 300; }
+
+/* Поля формы */
+.field-group { margin-bottom: 24px; }
+
+.field-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rose-dark);
+  margin-bottom: 10px;
+}
+
+.field-input {
+  width: 100%;
+  padding: 13px 18px;
+  border: 1.5px solid var(--blush);
+  border-radius: var(--radius-sm);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: rgba(255,255,255,0.7);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  margin-top: 8px;
+}
+
+.field-input:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(232, 96, 122, 0.12);
+  background: #fff;
+}
+
+.field-input::placeholder { color: #bba8ae; }
+
+/* Чипсы еды / времени */
+.food-chips, .time-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.83rem;
+  font-weight: 400;
+  background: var(--rose-light);
+  color: var(--text-soft);
+  border: 1.5px solid var(--blush);
+  border-radius: 50px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.chip:hover {
+  background: var(--blush);
+  border-color: var(--rose);
+  color: var(--rose-dark);
+}
+
+.chip.selected {
+  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-dark) 100%);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(232, 96, 122, 0.3);
+  transform: scale(1.05);
+}
+
+/* Кнопка отправки */
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-dark) 100%);
+  color: #fff;
+  font-size: 1.05rem;
+  border-radius: 50px;
+  box-shadow: 0 8px 28px rgba(232, 96, 122, 0.4);
+  margin-top: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(232, 96, 122, 0.5);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Ошибка */
+.error-msg {
+  color: #c94468;
+  font-size: 0.85rem;
+  min-height: 20px;
+  margin-bottom: 8px;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── Экран 3: Успех ── */
+.success-card { padding: 56px 40px; }
+
+.success-hearts {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+}
+
+.success-hearts span {
+  display: inline-block;
+  animation: heartPop 1.5s ease-in-out infinite;
+}
+
+.success-hearts span:nth-child(1) { animation-delay: 0s; }
+.success-hearts span:nth-child(2) { animation-delay: 0.3s; }
+.success-hearts span:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes heartPop {
+  0%, 100% { transform: scale(1);    }
+  50%       { transform: scale(1.25); }
+}
+
+.success-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  color: var(--rose-dark);
+  margin-bottom: 16px;
+}
+
+.success-msg {
+  font-size: 1.15rem;
+  color: var(--text-soft);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.success-detail {
+  background: var(--rose-light);
+  border: 1px solid var(--blush);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.8;
+  text-align: left;
+  margin-bottom: 24px;
+  display: none;
+}
+
+.success-detail.visible { display: block; animation: cardIn 0.5s ease both; }
+
+.success-footer {
+  font-size: 0.9rem;
+  color: var(--rose);
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+
+/* ── Скелет анимаций входа ── */
+.slide-in {
+  animation: cardIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ── Адаптив: телефон ── */
+@media (max-width: 520px) {
+  .card        { padding: 36px 22px; }
+  .form-card   { padding: 32px 18px; }
+  .invite-title      { font-size: 2rem; }
+  .invite-question   { font-size: 1.5rem; }
+  .buttons-wrap      { flex-direction: column; align-items: center; }
+  .btn-yes, .btn-no  { width: 200px; }
+  .form-title  { font-size: 1.4rem; }
+  .success-title { font-size: 2.2rem; }
+}
+
+@media (max-width: 360px) {
+  .invite-title    { font-size: 1.7rem; }
+  .invite-question { font-size: 1.3rem; }
+}
+
+/* ── Полоска прогресса при отправке ── */
+.sending-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--rose-dark);
+}
+
+.spinner {
+  width: 48px; height: 48px;
+  border: 4px solid var(--blush);
+  border-top-color: var(--rose);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
